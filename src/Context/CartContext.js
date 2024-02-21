@@ -1,10 +1,14 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { createContext, useState } from "react";
 
 export const CartContext = createContext();
 
 export default function Context({ children }) {
   const [cart, setCart] = useState([]);
+  const [amountProduct, setAmountProduct] = useState(null);
   const [total, setTotal] = useState(0);
+  const navigation = useNavigation();
+  const [product, setProduct] = useState();
 
   function addItemCart(newItem) {
     const itemIndex = cart.findIndex((item) => item.id === newItem.id);
@@ -19,7 +23,7 @@ export default function Context({ children }) {
 
       setCart(cartList);
       totalResultCart(cartList);
-
+      setAmountProduct((prevItens) => prevItens + 1);
       return;
     }
 
@@ -29,6 +33,7 @@ export default function Context({ children }) {
       total: newItem.price,
     };
 
+    setAmountProduct((prevItens) => prevItens + 1);
     setCart((products) => [...products, data]);
     totalResultCart([...cart, data]);
   }
@@ -44,6 +49,7 @@ export default function Context({ children }) {
       cartList[itemIndex].total =
         cartList[itemIndex].total - cartList[itemIndex].price;
 
+      setAmountProduct((prevItens) => prevItens - 1);
       setCart(cartList);
       totalResultCart(cartList);
       return;
@@ -51,6 +57,7 @@ export default function Context({ children }) {
 
     const removeItem = cart.filter((item) => item.id !== product.id);
     setCart(removeItem);
+    setAmountProduct((prevItens) => prevItens - 1);
     totalResultCart(removeItem);
   }
 
@@ -60,11 +67,27 @@ export default function Context({ children }) {
       return acc + obj.total;
     }, 0);
 
-    setTotal(result.toFixed(2));
+    setTotal(result);
+  }
+
+  function productParams(id) {
+    setProduct(id);
+
+    navigation.navigate("Product");
   }
 
   return (
-    <CartContext.Provider value={{ cart, addItemCart, removeItemCart, total }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addItemCart,
+        removeItemCart,
+        total,
+        productParams,
+        product,
+        amountProduct,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

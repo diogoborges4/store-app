@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { CartContext } from "../Context/CartContext";
+import Header from "../components/Header";
 
 export default function Cart() {
   const { cart, addItemCart, removeItemCart, total } = useContext(CartContext);
@@ -26,7 +27,9 @@ export default function Cart() {
   useEffect(() => {}, [value]);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
+      <Header />
+
       <FlatList
         data={cart}
         showsVerticalScrollIndicator={false}
@@ -34,7 +37,7 @@ export default function Cart() {
         renderItem={({ item }) => (
           <View style={styles.container}>
             <View>
-              <Text style={styles.title}>{item.name}</Text>
+              <Text style={styles.title}>{item.title}</Text>
               <Text style={styles.price}>R$ {item.price}</Text>
             </View>
 
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
     borderColor: "#dfdfdf",
     borderRadius: 2,
     marginBottom: 14,
-    padding: 8,
+    padding: 15,
   },
   title: {
     fontWeight: "bold",

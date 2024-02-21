@@ -2,18 +2,15 @@ import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import List from "./src/List";
-import Routes from "./src/Routes";
-import { useState } from "react";
+import Drawer from "./src/Routes/Drawer";
 import Context from "./src/Context/CartContext";
+import StackRoute from "./src/Routes/Stack";
 
 export default function App() {
-  const [productsApp, setProductsApp] = useState(["jose"]);
-
   return (
     <NavigationContainer>
       <Context>
-        <Routes data={productsApp} />
+        <StackRoute />
         <StatusBar style="auto" />
       </Context>
     </NavigationContainer>
